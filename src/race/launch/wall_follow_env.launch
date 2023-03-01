@@ -1,0 +1,52 @@
+<?xml version='1.0'?>
+
+<launch>
+
+     <node name="urg_node3" pkg="urg_node" type="urg_node" output="screen">
+    <param name="ip_address" value="192.168.0.10"/>
+     <remap from="/scan" to="/scan3"/>
+  </node>
+
+  <!-- load VESC odometry parameters -->
+  <arg         name           = 'vesc_config'
+               default        = '$(find move_base)/config/vesc.config'/>
+  <rosparam    file           = '$(arg vesc_config)'
+               command        = 'load'/>
+
+
+
+  <!-- launch dist_finder node -->
+  <node        name           = 'dist_finder3'
+               pkg            = 'race'
+               type           = 'dist_finder_env.py'/>
+   <remap from="/scan" to="/scan3"/>
+  
+  <!-- launch pid_controller node -->
+  <node        name           = 'pid_controller3'
+               pkg            = 'race'
+               type           = 'control1.py'/>
+
+ 
+    <arg name="node_name" default="vesc_driver_node3" />
+  
+  <!-- Optionally launch in GDB, for debugging -->
+  <arg name="debug" default="false" />
+  <arg if="$(arg debug)" name="launch_prefix" value="xterm -e gdb --args" />
+  <arg unless="$(arg debug)" name="launch_prefix" value="" />
+
+  <!-- VESC driver parameters -->
+  <arg name="port" default="/dev/sensors/vesc" />
+
+  <!-- VESC driver node -->
+  <node pkg="vesc_driver" type="vesc_driver_node" name="$(arg node_name)"
+        output="screen" launch-prefix="$(arg launch_prefix)" >
+    <param name="port" value="$(arg port)" />
+  <remap from="/commands/servo/position" to="/commands/servo/position3"/>
+  <remap from="/commands/motor/duty_cycle" to="/commands/motor/duty_cycle3"/>
+  </node>
+
+
+
+
+
+</launch>

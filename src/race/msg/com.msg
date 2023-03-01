@@ -1,0 +1,11 @@
+float32 pid_vel
+float32 pid_error
+float32 z
+float32 a
+float32 b
+float32 dist_CD
+float32 dist_AB
+float32 alpha
+float32 realvel
+float32 theta1
+float32 theta2
