@@ -1,8 +1,0 @@
-prefix=/home/jiangwei3/catkin_ws/devel
-
-Name: move_base
-Description: Description of move_base
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 
