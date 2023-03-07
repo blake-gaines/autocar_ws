@@ -11,7 +11,7 @@ import math
 # Some useful variable declarations.
 angle_range = 270		# sensor angle range of the lidar
 car_length = 1.5	# distance (in m) that we project the car forward for correcting the error. You may want to play with this. 
-desired_trajectory = 0.20	# distance from the wall (left or right - we cad define..but this is defined for right). You should try different values
+desired_trajectory = 0.5	# distance from the wall (left or right - we cad define..but this is defined for right). You should try different values
 vel = 6 		# this vel variable is not really used here.
 error = 0.0
 obstacle_check = [(80, 0.5), (90, 1.0), (100, 0.5)]

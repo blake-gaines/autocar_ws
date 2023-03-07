@@ -5,6 +5,7 @@ from race.msg import pid_input
 from ackermann_msgs.msg import AckermannDriveStamped
 import sys
 from std_msgs.msg import Float64
+import math
 
 # arbitrarily initialized. 25 is not a special value. This code can accept input desired velocity from the user.
 angle_min_rel     = -100.0              # max left command
@@ -44,8 +45,8 @@ def control(data):
     vel_input = data.pid_vel
     theta1 = data.theta1
     theta2 = data.theta2
-    kp = 20.0
-    kd = 0.09
+    kp = 10.0
+    kd = 4
 	## Your code goes here
 	# 1. Scale the error 
 	# 2. Apply the PID equation on error to compute steering
@@ -68,8 +69,8 @@ def control(data):
     speed_pub.publish(speed_req)
 
     ack_msg = AckermannDriveStamped()
-    ack_msg.drive.speed = speed
-    ack_msg.drive.steering_angle = steering_angle
+    ack_msg.drive.speed = vel_input / 10
+    ack_msg.drive.steering_angle = -math.radians(angle)
     drive_pub.publish(ack_msg)
     
 if __name__ == '__main__':
@@ -78,5 +79,5 @@ if __name__ == '__main__':
 	global vel_input
 	print("Listening to error for PID")
 	rospy.init_node('pid_controller', anonymous=True)
-	rospy.Subscriber("error2", pid_input, control)
+	rospy.Subscriber("error", pid_input, control)
 	rospy.spin()
