@@ -36,7 +36,6 @@ def output_speed_mixer(rel_speed):
     return duty_cycle
 
 def control(data):
-    rospy.loginfo("CONTROL LEFT STARTING")
     global prev_error
     global vel_input
     global kp 
@@ -69,7 +68,9 @@ def control(data):
     speed_pub.publish(speed_req)
 
     ack_msg = AckermannDriveStamped()
-    ack_msg.drive.speed = vel_input / 10
+    ack_msg.header.stamp = rospy.Time.now()
+    ack_msg.header.frame_id = "laser"
+    ack_msg.drive.speed = vel_input / 5
     ack_msg.drive.steering_angle = -math.radians(angle)
     drive_pub.publish(ack_msg)
     
