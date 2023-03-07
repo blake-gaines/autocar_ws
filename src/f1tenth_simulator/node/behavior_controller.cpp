@@ -38,6 +38,7 @@ private:
     int random_walker_mux_idx;
     int nav_mux_idx;
     int brake_mux_idx;
+    int follow_left_mux_idx;
     // ***Add mux index for new planner here***
     // int new_mux_idx;
 
@@ -60,6 +61,7 @@ private:
     std::string brake_key_char;
     std::string random_walk_key_char;
     std::string nav_key_char;
+    std::string follow_left_key_char;
     // ***Add key char for new planner here***
     // int new_key_char;
 
@@ -117,6 +119,7 @@ public:
         n.getParam("random_walker_mux_idx", random_walker_mux_idx);
         n.getParam("brake_mux_idx", brake_mux_idx);
         n.getParam("nav_mux_idx", nav_mux_idx);
+        n.getParam("follow_left_mux_idx", follow_left_mux_idx);
         // ***Add mux index for new planner here***
         // n.getParam("new_mux_idx", new_mux_idx);
 
@@ -135,6 +138,7 @@ public:
         n.getParam("random_walk_key_char", random_walk_key_char);
         n.getParam("brake_key_char", brake_key_char);
         n.getParam("nav_key_char", nav_key_char);
+        n.getParam("follow_left_key_char", follow_left_key_char);
         // ***Add key char for new planner here***
         // n.getParam("new_key_char", new_key_char);
 
@@ -345,6 +349,13 @@ public:
             // nav
             toggle_mux(nav_mux_idx, "Navigation");
         }
+
+        if (msg.data == follow_left_key_char) {
+         // new planner
+         toggle_mux(follow_left_mux_idx, "New Planner");
+        }
+
+
         // ***Add new else if statement here for new planning method***
         // if (msg.data == new_key_char) {
         //  // new planner
