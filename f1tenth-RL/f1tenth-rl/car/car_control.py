@@ -53,6 +53,8 @@ class Drive():
             self.lightly_steering_reduction = LIGHTLY_STEERING_REDUCTION_SIM
             self.backward_seconds = BACKWARD_SECONDS_SIM
             self.reset_publisher = rospy.Publisher("/pose", PoseStamped, queue_size=0)
+            self.angle_pub         = rospy.Publisher('/commands/servo/position2', Float64, queue_size = 1)
+            self.speed_pub         = rospy.Publisher('/commands/motor/duty_cycle2', Float64, queue_size = 1)
         self.max_speed = rospy.get_param("max_speed", 5)
         self.max_steering = rospy.get_param("max_steering", max_steering)
         self.drive_publisher = rospy.Publisher(topic, AckermannDriveStamped, queue_size=0)
@@ -100,6 +102,8 @@ class Drive():
         while True:
             try:
                 self.drive_publisher.publish(self.ack_msg)
+                self.drive_pub.publish(self.ack_msg.speed)
+                self.angle_pub.publish(self.ack_msg.steering_angle)
             except ROSException as e:
                 if str(e) == "publish() to a closed topic":
                     pass
