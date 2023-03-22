@@ -20,7 +20,7 @@ speed_max_rel     = 100.0               # max speed command
 angle_pub         = rospy.Publisher('/commands/servo/position2', Float64, queue_size = 1)
 speed_pub         = rospy.Publisher('/commands/motor/duty_cycle2', Float64, queue_size = 1)
 
-drive_pub         = rospy.Publisher('/drive', AckermannDriveStamped, queue_size=0)
+drive_pub         = rospy.Publisher('/follow_left', AckermannDriveStamped, queue_size=0)
 # setup a publisher to publish to the /car_x/offboard/command topic for your racecar.
 
 def output_angle_mixer(rel_angle):
