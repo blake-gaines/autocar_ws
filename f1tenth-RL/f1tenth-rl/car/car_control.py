@@ -1,6 +1,7 @@
 import rospy
 from ackermann_msgs.msg import AckermannDriveStamped
 from rospy.exceptions import ROSException
+from std_msgs.msg import Float64
 
 from threading import Thread
 import time
@@ -102,8 +103,9 @@ class Drive():
         while True:
             try:
                 self.drive_publisher.publish(self.ack_msg)
-                self.drive_pub.publish(self.ack_msg.speed)
-                self.angle_pub.publish(self.ack_msg.steering_angle)
+                if not self.is_simulator:
+                    self.drive_pub.publish(self.ack_msg.speed)
+                    self.angle_pub.publish(self.ack_msg.steering_angle)
             except ROSException as e:
                 if str(e) == "publish() to a closed topic":
                     pass

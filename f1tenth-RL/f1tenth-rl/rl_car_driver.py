@@ -11,7 +11,7 @@ import datetime
 import tensorflow as tf
 
 import replay
-import dqn
+import dqn_torch as dqn
 from car_env import CarEnv
 from state import State
 from logger import AsyncLogger
