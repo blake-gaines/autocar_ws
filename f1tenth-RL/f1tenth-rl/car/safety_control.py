@@ -10,7 +10,7 @@ TTC_THRESHOLD_SIM = 0.37
 TTC_THRESHOLD_REAL_CAR = 1.21
 
 EUCLIDEAN_THRESHOLD_SIM = 0.35
-EUCLIDEAN_THRESHOLD_REAL_CAR = 0.35
+EUCLIDEAN_THRESHOLD_REAL_CAR = 0.2
 
 USE_TTC_SIM = False
 USE_TTC_REAL_CAR = True
@@ -36,6 +36,10 @@ class SafetyControl():
             self.use_ttc = USE_TTC_SIM
 
     def lidar_callback(self, lidar_data):
+        midrange = len(lidar_data.ranges) //  2
+        #lidar_data.ranges = lidar_data.ranges[midrange-300:midrange+300]
+        #print("Minimum:", min(lidar_data.ranges[midrange-300:midrange+300]))
+        # print(sorted(lidar_data.ranges)[:10], min(lidar_data.ranges), max(lidar_data.ranges))
         if self.safety:
             if self.use_ttc:
                 acceleration = self.sensors.get_car_linear_velocity()
@@ -49,11 +53,13 @@ class SafetyControl():
                                 self.emergency_brake = True
                                 break
             
-            if min(lidar_data.ranges) < self.euclidean_treshold:
+            if min(lidar_data.ranges[midrange-300:midrange+300]) < self.euclidean_treshold:
                 self.emergency_brake = True
+                print("ahh a waalll 1", min(lidar_data.ranges))
 
-            if ONLY_EXTERNAL_BARRIER and min(lidar_data.ranges) > EXTERNAL_BARRIER_THRESHOLD:
+            if ONLY_EXTERNAL_BARRIER and min(lidar_data.ranges[midrange-300:midrange+300]) > EXTERNAL_BARRIER_THRESHOLD:
                 self.emergency_brake = True
+                print("ahh a waalll 2")
 
             if self.emergency_brake:
                 self.drive.stop()

@@ -70,6 +70,8 @@ class CarEnv:
             self.game_score += reward
             return reward, self.state, self.is_terminal
 
+        print("Action:", action)
+
         reward = 0
         if action == 0:
             self.control.forward()
@@ -90,6 +92,7 @@ class CarEnv:
             self.control.lightly_left()
             reward = 0.01
         elif action == 6:
+            print("Chose To Stop")
             self.control.stop()
             reward = -0.01
             self.car_stop_count += 1

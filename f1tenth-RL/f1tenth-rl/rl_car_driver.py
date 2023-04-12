@@ -205,6 +205,7 @@ def run_epoch(min_epoch_steps, eval_with_epsilon=None):
                 # Make the move
                 reward, state, is_terminal = environment.step(action)
 
+                print(f"Reward: {reward}")
                 # train
                 if is_training and old_state is not None:
                     if environment.get_step_number() > args.observation_steps:

@@ -23,7 +23,7 @@ MAX_SPEED_REDUCTION = 4.5
 STEERING_SPEED_REDUCTION = 4.5
 BACKWARD_SPEED_REDUCTION = 4.5
 LIGHTLY_STEERING_REDUCTION = 2.4
-BACKWARD_SECONDS = 1.5
+BACKWARD_SECONDS = 1
 
 MAX_SPEED_REDUCTION_SIM = 1
 STEERING_SPEED_REDUCTION_SIM = 1.4
@@ -39,7 +39,7 @@ class Drive():
         self.is_simulator = is_simulator
         if not is_simulator:
             topic = "/vesc/high_level/ackermann_cmd_mux/input/nav_0"
-            max_steering = 0.34
+            max_steering = 1
             self.max_speed_reduction = MAX_SPEED_REDUCTION
             self.steering_speed_reduction = STEERING_SPEED_REDUCTION
             self.backward_speed_reduction = BACKWARD_SPEED_REDUCTION
@@ -54,8 +54,8 @@ class Drive():
             self.lightly_steering_reduction = LIGHTLY_STEERING_REDUCTION_SIM
             self.backward_seconds = BACKWARD_SECONDS_SIM
             self.reset_publisher = rospy.Publisher("/pose", PoseStamped, queue_size=0)
-            self.angle_pub         = rospy.Publisher('/commands/servo/position2', Float64, queue_size = 1)
-            self.speed_pub         = rospy.Publisher('/commands/motor/duty_cycle2', Float64, queue_size = 1)
+        self.angle_pub         = rospy.Publisher('/commands/servo/position', Float64, queue_size = 1)
+        self.speed_pub         = rospy.Publisher('/commands/motor/duty_cycle', Float64, queue_size = 1)
         self.max_speed = rospy.get_param("max_speed", 5)
         self.max_steering = rospy.get_param("max_steering", max_steering)
         self.drive_publisher = rospy.Publisher(topic, AckermannDriveStamped, queue_size=0)
@@ -104,8 +104,9 @@ class Drive():
             try:
                 self.drive_publisher.publish(self.ack_msg)
                 if not self.is_simulator:
-                    self.drive_pub.publish(self.ack_msg.speed)
-                    self.angle_pub.publish(self.ack_msg.steering_angle)
+                   # print(self.ack_msg.drive, dir(self.ack_msg.drive))
+                    self.speed_pub.publish(self.ack_msg.drive.speed)
+                    self.angle_pub.publish(self.ack_msg.drive.steering_angle)
             except ROSException as e:
                 if str(e) == "publish() to a closed topic":
                     pass
