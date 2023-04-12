@@ -1,0 +1,12 @@
+roscore
+source devel/setup.sh
+roslaunch vesc_driver vesc_driver_node.launch
+~/autocar_ws/f1tenth-RL/f1tenth-rl$ python3 rl_car_driver.py 
+
+rostopic pub /commands/servo/position std_msgs/Float64 0.6 -r 10
+rostopic echo /sensors/servo_position_command
+rostopic echo /commands/motor/duty_cycle
+rostopic list
+
+rviz
+** Set "Fixed Frame" from "map" to "laser"
